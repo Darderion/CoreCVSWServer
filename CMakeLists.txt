@@ -5,8 +5,8 @@ project(libEventApp)
 set(CMAKE_CXX_STANDARD 14)
 
 file(GLOB SRC
-        )
+        examples/BasicServer/main.cpp)
 
-add_executable(libEventApp main.cpp libEventApp.h ${SRC} customCallbacks.h)
+add_executable(libEventApp ${SRC})
 
 target_link_libraries(libEventApp -levent)
