@@ -2,20 +2,18 @@
 #include <iostream>
 #include "../../LibEventServer.h"
 #include "customCallbacks.h"
-
-// This example illustrates how LibEventServer can run in the same thread
-// as main program.
+#include "ImageGenerator.h"
 
 int main(int argc, char **argv) {
-    std::cout << "Init" << std::endl;
-
     serv = LibEventServer();    // Creating an instance of LibEventServer
     serv.options.verbose = 1;   // Configuring port, IP and other available options
-    serv.options.port = 2020;
+    serv.options.port = 8080;
     serv.setup();               // Starting server with current configuration
     serv.set_callback("/",on_get_index);        // Adding handlers
     serv.set_callback("/AJAX_request", on_AJAX);// for different routes
     serv.set_default_callback(on_other_requests);
+
+    generateImage();
 
     while(true)
     {
