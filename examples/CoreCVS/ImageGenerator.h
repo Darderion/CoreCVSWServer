@@ -13,20 +13,21 @@ int width = 255;
 int height = 255;
 int max_colour = 255;
 
-void generateImage()
+const char *img_filename = "picture.ppm";
+
+void generateImage(int id)
 {
     std::ofstream file;
-    file.open("picture.ppm");
+    file.open(img_filename);
     file << "P3 " << width << " " << height << " " << max_colour << " ";
-    for(int y = 0; y < height; y++)
+    for(int y = id; y < id+height; y++)
     {
-        for(int x = 0; x < width; x++)
+        for(int x = id; x < id+width; x++)
         {
             file << x % max_colour << " " << y % max_colour << " " << x * y % max_colour << " ";
         }
     }
     file.close();
-    system("xdg-open picture.ppm");
 }
 
 #endif //LIBEVENTAPP_IMAGEGENERATOR_H

@@ -5,6 +5,7 @@
 #ifndef LIBEVENTAPP_CUSTOMCALLBACKS_H
 #define LIBEVENTAPP_CUSTOMCALLBACKS_H
 
+#include "ImageGenerator.h"
 #include "../../LibEventServer.h"
 
 #include <iostream>
@@ -19,13 +20,16 @@ const short BUF_LEN = 41;
 const char RESPONCE[BUF_LEN] = "<H1>Hello there, drones' users</H1><BR/>";
 const char *SERVER_NAME = "Simple HTTP Server";
 
-const char *HTML_TOP = "<html><head><title>%s title</title><style>#menu {display: grid;color: red;width: 100%;height: 100px;background-color: #abcdef;grid-template-columns: auto repeat(3, 200px) 100px;}#menu button {margin: 5%;}#menuOption1 { grid-column: 2; }#menuOption2 { grid-column: 3; }#menuOption3 { grid-column: 4; }</style></head><body><div id=\"menu\"><button id=\"menuOption1\">Some button</button><button id=\"menuOption2\">Some image</button><button id=\"menuOption3\">Some text</button></div><div id=\"content\"></div>";
-const char *HTML_BOTTOM = "<script>const buttonAJAX = document.getElementById('menuOption1');buttonAJAX.addEventListener('click', loadAJAX);function loadAJAX() {var xhr = new XMLHttpRequest();xhr.open('GET', '/AJAX_request', true);xhr.onload = function() {if (this.status == 200) console.log(this.responseText);};};</script></body></html>";
+const char *HTML_TOP = "<html><head><title>%s title</title><style>#menu {display: grid;color: red;width: 100%;height: 100px;background-color: #abcdef;grid-template-columns: auto repeat(3, 200px) 100px;}#menu button {margin: 5%;}#menuOption1 { grid-column: 2; }#menuOption2 { grid-column: 3; }#menuOption3 { grid-column: 4; }</style></head><body><div id='menu'><button id='menuOption1'>Some button</button><button id='menuOption2'>Some image</button><button id='menuOption3'>Some text</button></div><div id='content'></div>";
+const char *HTML_BOTTOM = "<script>const buttonAJAX = document.getElementById('menuOption1');buttonAJAX.addEventListener('click', loadAJAX);function loadAJAX() { var xhr = new XMLHttpRequest();xhr.open('GET', '/AJAX_request', true);xhr.onload = function() {if (this.status == 200) console.log(this.responseText); else console.log(this.status); };};</script></body></html>";
 
-const char *HTML_BODY1 = "<canvas width=\"255px\" height=\"255px\" id=\"Canvas\"></canvas><script>;const canvas=document.getElementById('Canvas');const context=canvas.getContext('2d');const width=canvas.width;const height=canvas.height;const imagedata=context.createImageData(width,height);function createImage() {var pixelindex = 0; var pictureStr = \"";
-const char *HTML_BODY2 = "\"; var arr = pictureStr.split(\" \"); console.log(arr); for (var x=4; x<width*height*3+4; x+=3) { imagedata.data[pixelindex] = arr[x]; imagedata.data[pixelindex+1] = arr[x+1]; imagedata.data[pixelindex+2] = arr[x+2]; imagedata.data[pixelindex+3] = 255; /*console.log(`R=${arr[x]}, G=${arr[x + 1]}, B=${arr[x + 2]}`);*/ pixelindex+=4; } }; function main(t){/*window.requestAnimationFrame(main);*/createImage();context.putImageData(imagedata,0,0)};main(0);</script>";
+const char *HTML_BODY1 = "<canvas width='255px' height='255px' id='Canvas'></canvas><div id='pictureDiv' hidden>";
+const char *HTML_BODY2 = "</div><script>setInterval(_=>{$('#pictureDiv').load('AJAX_request', responseText => {main()});}, 10);"
+                         "const canvas=document.getElementById('Canvas');const context=canvas.getContext('2d');const width=canvas.width;const height=canvas.height;const imagedata=context.createImageData(width,height);function createImage() {var pixelindex = 0; var pictureStr = document.getElementById('pictureDiv').textContent;"
+                         "var arr = pictureStr.split(' '); for (var x=4; x<width*height*3+4; x+=3) { imagedata.data[pixelindex] = arr[x]; imagedata.data[pixelindex+1] = arr[x+1]; imagedata.data[pixelindex+2] = arr[x+2]; imagedata.data[pixelindex+3] = 255; pixelindex+=4; } }; function main(t){/*window.requestAnimationFrame(main);*/createImage();context.putImageData(imagedata,0,0)};main(0);</script>";
+const char *JQueryLink = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\"></script>";
 
-LibEventServer serv;
+LibEventServer server;
 
 void on_get_index(struct evhttp_request *req, void *arg)
 {
@@ -39,7 +43,7 @@ void on_get_index(struct evhttp_request *req, void *arg)
     int fd;
     struct stat stbuf;
 
-    if (((fd = open("picture.ppm", O_RDONLY)) < 0) || (fstat(fd, &stbuf) < 0))
+    if (((fd = open(img_filename, O_RDONLY)) < 0) || (fstat(fd, &stbuf) < 0))
     {
         evbuffer_add_printf(evb, "Can't get image from drone (ERR_CODE 1)\n");
         evbuffer_add_printf(evb, "%s", HTML_BOTTOM);
@@ -70,21 +74,54 @@ void on_get_index(struct evhttp_request *req, void *arg)
     evbuffer_add_printf(evb, "%s", HTML_BODY2);
 
     evbuffer_add_printf(evb, "Some text\n");
+    evbuffer_add_printf(evb, "%s", JQueryLink);
     evbuffer_add_printf(evb, "%s", HTML_BOTTOM);
 
     evhttp_send_reply(req, HTTP_OK, "OK", evb);
     evbuffer_free(evb);
+    close(fd);
 }
 
 void on_AJAX(struct evhttp_request *req, void *arg)
 {
     struct evbuffer *evb = evbuffer_new();
+    int fd;
+    struct stat stbuf;
+
     if (!evb) return;
 
-    evbuffer_add_printf(evb, "Woooooooooooo");
+    if (((fd = open(img_filename, O_RDONLY)) < 0) || (fstat(fd, &stbuf) < 0))
+    {
+        evbuffer_add_printf(evb, "Can't get image from drone (ERR_CODE 1)\n");
+        evbuffer_add_printf(evb, "%s", HTML_BOTTOM);
+        evhttp_send_reply(req, HTTP_OK, "OK", evb);
+        evbuffer_free(evb);
+        if (fd > -1) close(fd);
+        return;
+    }
+
+    int total_read_bytes = 0;
+    int read_bytes;
+    while(total_read_bytes < stbuf.st_size)
+    {
+        read_bytes = evbuffer_read(evb, fd, stbuf.st_size);
+        if (read_bytes < 0)
+        {
+            evbuffer_add_printf(evb, "Can't get image from drone (ERR_CODE 2)\n");
+            evbuffer_add_printf(evb, "%s", HTML_BOTTOM);
+            evhttp_send_reply(req, HTTP_OK, "OK", evb);
+            evbuffer_free(evb);
+            close(fd);
+            return;
+        }
+        total_read_bytes += read_bytes;
+    }
+
+    // evhttp_add_header(req->output_headers, "Content-Type", "image/ppm");
 
     evhttp_send_reply(req, HTTP_OK, "OK", evb);
     evbuffer_free(evb);
+    close(fd);
 }
 
 void on_other_requests(struct evhttp_request * req, void *arg)
