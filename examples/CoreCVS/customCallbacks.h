@@ -16,17 +16,24 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include <chrono>
+
 const short BUF_LEN = 41;
 const char RESPONCE[BUF_LEN] = "<H1>Hello there, drones' users</H1><BR/>";
 const char *SERVER_NAME = "Simple HTTP Server";
 
-const char *HTML_TOP = "<html><head><title>%s title</title><style>#menu {display: grid;color: red;width: 100%;height: 100px;background-color: #abcdef;grid-template-columns: auto repeat(3, 200px) 100px;}#menu button {margin: 5%;}#menuOption1 { grid-column: 2; }#menuOption2 { grid-column: 3; }#menuOption3 { grid-column: 4; }</style></head><body><div id='menu'><button id='menuOption1'>Some button</button><button id='menuOption2'>Some image</button><button id='menuOption3'>Some text</button></div><div id='content'></div>";
-const char *HTML_BOTTOM = "<script>const buttonAJAX = document.getElementById('menuOption1');buttonAJAX.addEventListener('click', loadAJAX);function loadAJAX() { var xhr = new XMLHttpRequest();xhr.open('GET', '/AJAX_request', true);xhr.onload = function() {if (this.status == 200) console.log(this.responseText); else console.log(this.status); };};</script></body></html>";
-
-const char *HTML_BODY1 = "<canvas width='255px' height='255px' id='Canvas'></canvas><div id='pictureDiv' hidden>";
-const char *HTML_BODY2 = "</div><script>setInterval(_=>{$('#pictureDiv').load('AJAX_request', responseText => {main()});}, 10);"
-                         "const canvas=document.getElementById('Canvas');const context=canvas.getContext('2d');const width=canvas.width;const height=canvas.height;const imagedata=context.createImageData(width,height);function createImage() {var pixelindex = 0; var pictureStr = document.getElementById('pictureDiv').textContent;"
-                         "var arr = pictureStr.split(' '); for (var x=4; x<width*height*3+4; x+=3) { imagedata.data[pixelindex] = arr[x]; imagedata.data[pixelindex+1] = arr[x+1]; imagedata.data[pixelindex+2] = arr[x+2]; imagedata.data[pixelindex+3] = 255; pixelindex+=4; } }; function main(t){/*window.requestAnimationFrame(main);*/createImage();context.putImageData(imagedata,0,0)};main(0);</script>";
+const char *HTML_TOP = "<html><head><title>%s title</title><style>#menu {display: grid;color: red;width: 100%;height: 100px;background-color: #abcdef;grid-template-columns: auto repeat(3, 200px) 100px;}#menu button {margin: 5%;}#menuOption1 { grid-column: 2; }#menuOption2 { grid-column: 3; }#menuOption3 { grid-column: 4; }</style></head>";
+const char *HTML_BODY = "<body><div id='menu'><button id='menuOption1'>Some button</button><button id='menuOption2'>Some image</button><button id='menuOption3'>Some text</button></div><div id='content'></div><canvas id='Canvas' width='255' height='255'></canvas>";
+const char *HTML_BOTTOM = "<script>$(document).ready(function() { const buttonAJAX = document.getElementById('menuOption1');buttonAJAX.addEventListener('click', loadAJAX);function loadAJAX() { var xhr = new XMLHttpRequest();xhr.open('GET', '/AJAX_request', true);xhr.onload = function() {if (this.status == 200) console.log(this.responseText); else console.log(this.status); };};"
+                          // "setInterval(_=>{jQuery.get('AJAX_request', null, data => { drawCameraImage(data)}); }, 50);"
+                          "var performance = [0, 0, 0, 0, 0];"
+                          "function getCameraImage() { jQuery.get('AJAX_request', null, data => { performance[1] = new Date(); getCameraImage(); performance[2] = new Date(); fps++; /* drawCameraImage(data); */ performance[3] = new Date(); /* console.log('Request received after '+(performance[1] - performance[0])+' ms and processed after '+(performance[2] - performance[0]) + ' ms (Drawn after '+(performance[3]-performance[2])+' ms)'); */ performance[0] = performance[3]; } ); }"
+                          "var fps = 0; setInterval(_ => { console.log(fps); fps = 0; }, 1000);"
+                          "getCameraImage();"
+                          "const canvas=document.getElementById('Canvas'); const context=canvas.getContext('2d');const width=canvas.width;const height=canvas.height;const imagedata=context.createImageData(width,height);"
+                          "function createImage(str) {var pixelindex = 0; var arr = str.split(' '); for (var x=4; x<width*height*3+4; x+=3) { imagedata.data[pixelindex] = arr[x]; imagedata.data[pixelindex+1] = arr[x+1]; imagedata.data[pixelindex+2] = arr[x+2]; imagedata.data[pixelindex+3] = 255; pixelindex+=4; } };"
+                          "function drawCameraImage(str){ createImage(str); context.putImageData(imagedata,0,0)}; });</script>"
+                          "</body></html>";
 const char *JQueryLink = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\"></script>";
 
 LibEventServer server;
@@ -53,25 +60,8 @@ void on_get_index(struct evhttp_request *req, void *arg)
         return;
     }
 
-    evbuffer_add_printf(evb, "%s", HTML_BODY1);
-
-    int total_read_bytes = 0;
-    int read_bytes;
-    while(total_read_bytes < stbuf.st_size)
-    {
-        read_bytes = evbuffer_read(evb, fd, stbuf.st_size);
-        if (read_bytes < 0)
-        {
-            evbuffer_add_printf(evb, "Can't get image from drone (ERR_CODE 2)\n");
-            evbuffer_add_printf(evb, "%s", HTML_BOTTOM);
-            evhttp_send_reply(req, HTTP_OK, "OK", evb);
-            evbuffer_free(evb);
-            close(fd);
-            return;
-        }
-        total_read_bytes += read_bytes;
-    }
-    evbuffer_add_printf(evb, "%s", HTML_BODY2);
+    // evbuffer_add_printf(evb, "%s", HTML_BODY1);
+    evbuffer_add_printf(evb, "%s", HTML_BODY);
 
     evbuffer_add_printf(evb, "Some text\n");
     evbuffer_add_printf(evb, "%s", JQueryLink);
@@ -84,6 +74,10 @@ void on_get_index(struct evhttp_request *req, void *arg)
 
 void on_AJAX(struct evhttp_request *req, void *arg)
 {
+#ifdef display_performance_measurements
+    auto start = std::chrono::steady_clock::now();
+#endif
+
     struct evbuffer *evb = evbuffer_new();
     int fd;
     struct stat stbuf;
@@ -122,6 +116,11 @@ void on_AJAX(struct evhttp_request *req, void *arg)
     evhttp_send_reply(req, HTTP_OK, "OK", evb);
     evbuffer_free(evb);
     close(fd);
+
+#ifdef display_performance_measurements
+    auto finish = std::chrono::steady_clock::now();
+    std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start).count() << std::endl;
+#endif
 }
 
 void on_other_requests(struct evhttp_request * req, void *arg)

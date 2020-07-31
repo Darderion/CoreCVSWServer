@@ -13,13 +13,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b3105f2b-73a8-4895-b104-bc4914a90291" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/generateImageApp" beforeDir="false" afterPath="$PROJECT_DIR$/build/generateImageApp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/picture.ppm" beforeDir="false" afterPath="$PROJECT_DIR$/build/picture.ppm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/CoreCVS/ImageGenerator.h" beforeDir="false" afterPath="$PROJECT_DIR$/examples/CoreCVS/ImageGenerator.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/CoreCVS/customCallbacks.h" beforeDir="false" afterPath="$PROJECT_DIR$/examples/CoreCVS/customCallbacks.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/CoreCVS/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/examples/CoreCVS/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +29,9 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="OCResolveContextSettings">
+    <option name="configuration" value="0-Debug-generateImageApp" />
   </component>
   <component name="ProjectId" id="1Uc4OjeIFDNsR8mNrPywqSJFI0l" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -59,6 +59,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.libEventApp">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="generateImageApp" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="libEventServer" TARGET_NAME="generateImageApp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="libEventServer" RUN_TARGET_NAME="generateImageApp">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -69,11 +74,17 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="CMake Application.generateImageApp" />
       <item itemvalue="CMake Application.libEventApp" />
     </list>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -95,12 +106,13 @@
       <workItem from="1595775061664" duration="16352000" />
       <workItem from="1595926494361" duration="95000" />
       <workItem from="1595936304492" duration="1182000" />
-      <workItem from="1595941377506" duration="5976000" />
+      <workItem from="1595941377506" duration="6863000" />
+      <workItem from="1596194738146" duration="5884000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1239" y="311" width="424" height="484" key="FileChooserDialogImpl" timestamp="1595926587280">
@@ -143,13 +155,13 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="649" y="140" width="749" height="824" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1595785632783" />
-    <state x="657" y="253" key="run.anything.popup" timestamp="1595955367538">
+    <state x="657" y="253" key="run.anything.popup" timestamp="1596203277797">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="657" y="253" key="run.anything.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1595955367538" />
-    <state x="656" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1595942710607">
+    <state x="657" y="253" key="run.anything.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1596203277797" />
+    <state x="656" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1596194965474">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="656" y="257" width="672" height="678" key="search.everywhere.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1595942710607" />
+    <state x="656" y="257" width="672" height="678" key="search.everywhere.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1596194965474" />
   </component>
 </project>
