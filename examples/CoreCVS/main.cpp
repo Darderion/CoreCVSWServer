@@ -7,7 +7,7 @@
 int main(int argc, char **argv) {
     server = LibEventServer();    // Creating an instance of LibEventServer
     server.options.verbose = 1;   // Configuring port, IP and other available options
-    server.options.port = 8080;
+    // server.options.port = 8080;
     server.setup();               // Starting server with current configuration
     server.set_callback("/",on_get_index);        // Adding handlers
     server.set_callback("/AJAX_request", on_AJAX);// for different routes

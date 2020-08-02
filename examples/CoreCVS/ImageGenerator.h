@@ -13,12 +13,12 @@ int width = 255;
 int height = 255;
 int max_colour = 255;
 
-const char *img_filename = "picture.ppm";
+const char *img_filename = "jojo.jpeg";
 
 void generateImage(int id)
 {
     std::ofstream file;
-    file.open(img_filename);
+    file.open("picture.ppm");
     file << "P3 " << width << " " << height << " " << max_colour << " ";
     for(int y = id; y < id+height; y++)
     {
