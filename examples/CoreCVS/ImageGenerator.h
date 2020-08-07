@@ -8,15 +8,16 @@
 #include <iostream>
 #include <fstream>
 
-int step = 0;
 int width = 255;
 int height = 255;
 int max_colour = 255;
 
-const char *img_filename = "jojo.jpeg";
+int curImg = 0;
 
-void generateImage(int id)
+const char *generateImage(int id = 0)
 {
+    curImg = (curImg + 1) % 4;
+#ifdef generate_ppm
     std::ofstream file;
     file.open("picture.ppm");
     file << "P3 " << width << " " << height << " " << max_colour << " ";
@@ -28,6 +29,13 @@ void generateImage(int id)
         }
     }
     file.close();
+#endif
+    switch (curImg) {
+        case 0: return "jojo0.jpg";
+        case 1: return "jojo1.jpg";
+        case 2: return "jojo2.jpg";
+        case 3: return "jojo3.jpg";
+    }
 }
 
 #endif //LIBEVENTAPP_IMAGEGENERATOR_H
