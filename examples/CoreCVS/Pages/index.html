@@ -39,21 +39,42 @@
 <div id='PitchDiv'></div>
 <div id='YawDiv'></div>
 
-<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
-
 <script>
-$(document).ready(function() {
-    const buttonAJAX = document.getElementById('menuOption1');
-    buttonAJAX.addEventListener('click', loadAJAX);
-    function loadAJAX() { var xhr = new XMLHttpRequest();xhr.open('GET', '/AJAX_request', true); xhr.onload = function() {if (this.status == 200) console.log(this.responseText); else console.log(this.status); };}
+function onLoad() {
+    function recursive_Ajax(url, func) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onload = function() {
+            if (this.status === 200) {
+                func(this.responseText);
+                recursive_Ajax(url, func);
+            }
+        };
+        xhr.send();
+    }
 
-    var performance = [0, 0, 0];
-    function getCameraImage() { jQuery.get('image_request', null, data => { $('#img').attr('src', 'data:image/png;base64,'+data); performance[1] = new Date(); getCameraImage(); performance[2] = new Date(); fps++;
-    console.log('Image request received after '+(performance[1] - performance[0])+' ms and processed after '+(performance[2] - performance[0]) + ' ms'); performance[0] = performance[2];
-    } ); }
-    function getStats() { jQuery.get('stats_request', null, data => { const arr = data.split('$'); $('#RollDiv').text('Roll...'+arr[0]); $('#PitchDiv').text('Pitch..'+arr[1]); $('#YawDiv').text('Yaw....'+arr[2]); getStats(); } ); }
-    var fps = 0; setInterval(_ => { console.log('FPS: '+fps); fps = 0; }, 1000); getCameraImage(); getStats();
-});
+    recursive_Ajax('stats_request', data => {
+        const arr = data.split('$');
+        document.getElementById('RollDiv').innerHTML = 'Roll: ..... '+arr[0];
+        document.getElementById('PitchDiv').innerHTML = 'Pitch: ... '+arr[1];
+        document.getElementById('YawDiv').innerHTML = 'Yaw: ....... '+arr[2];
+    });
+    recursive_Ajax('image_request', data => {
+        document.getElementById('img').setAttribute('src', 'data:image/png;base64,'+data);
+        fps++;
+    });
+
+    let fps = 0;
+    setInterval(_ => { console.log('FPS: '+fps); fps = 0; }, 1000);
+}
+
+(function(fn){
+    if (document.readyState != 'loading'){
+        fn();
+    } else {
+        document.addEventListener('DOMContentLoaded', fn);
+    }
+})(onLoad)
 </script>
 </body>
 </html>

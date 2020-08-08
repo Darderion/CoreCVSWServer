@@ -31,8 +31,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b3105f2b-73a8-4895-b104-bc4914a90291" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/CoreCVS/Pages/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/CoreCVS/Pages/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +131,7 @@
       <workItem from="1596283757775" duration="8953000" />
       <workItem from="1596376964048" duration="6362000" />
       <workItem from="1596821348572" duration="6033000" />
-      <workItem from="1596892398118" duration="3597000" />
+      <workItem from="1596892398118" duration="5837000" />
     </task>
     <servers />
   </component>
@@ -179,13 +179,13 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="649" y="140" width="749" height="824" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1595785632783" />
-    <state x="657" y="253" key="run.anything.popup" timestamp="1596895523445">
+    <state x="657" y="253" key="run.anything.popup" timestamp="1596898204399">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="657" y="253" key="run.anything.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1596895523445" />
-    <state x="656" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1596895930511">
+    <state x="657" y="253" key="run.anything.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1596898204399" />
+    <state x="656" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1596897491561">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="656" y="257" width="672" height="678" key="search.everywhere.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1596895930511" />
+    <state x="656" y="257" width="672" height="678" key="search.everywhere.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1596897491561" />
   </component>
 </project>
