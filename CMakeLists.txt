@@ -7,6 +7,10 @@ set(CMAKE_CXX_STANDARD 14)
 file(GLOB SRC examples/BasicServer/main.cpp)
 file(GLOB SRC2 examples/CoreCVS/main.cpp)
 
+file(COPY
+        examples/CoreCVS/Pages/
+        DESTINATION Pages)
+
 add_executable(libEventApp ${SRC})
 add_executable(generateImageApp ${SRC2})
 
