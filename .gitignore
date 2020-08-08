@@ -1,3 +1,4 @@
+
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
@@ -10,6 +11,7 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
+build
 
 # Created by https://www.gitignore.io/api/c++,cmake,clion
 # Edit at https://www.gitignore.io/?templates=c++,cmake,clion
