@@ -34,7 +34,7 @@ const char *generateImage(int id = 0)
         case 0: return "Pages/img/jojo0.jpg";
         case 1: return "Pages/img/jojo1.jpg";
         case 2: return "Pages/img/jojo2.jpg";
-        case 3: return "Pages/img/jojo3.jpg";
+        default: return "Pages/img/jojo3.jpg";
     }
 }
 

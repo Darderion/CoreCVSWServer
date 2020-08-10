@@ -1,8 +1,6 @@
 
-#include <iostream>
 #include "../../LibEventServer.h"
 #include "customCallbacks.h"
-#include "ImageGenerator.h"
 
 int main(int argc, char **argv) {
     server = LibEventServer();    // Creating an instance of LibEventServer
@@ -20,6 +18,4 @@ int main(int argc, char **argv) {
         // Calling PROCESS_REQUESTS function to respond to pending HTTP requests
         server.process_requests();
     }
-
-    return 0;
 }
