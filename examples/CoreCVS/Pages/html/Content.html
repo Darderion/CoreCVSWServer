@@ -1,0 +1,60 @@
+
+<div id='menu'>
+    <button id='menuOptionCamera' onclick="cameraImage.slideToggle()">Hide camera</button>
+    <button id='menuOption2'>Some image</button>
+    <button id='menuOption3'>Some text</button>
+</div>
+
+<div id="content">
+    <!--CONTENT-->
+    <div id="imgDiv">
+        <img id='img' src="" alt="Camera Image">
+    </div>
+
+    <table class="table-fill" width="200px">
+        <thead>
+        <tr>
+            <th width="100px">Property</th>
+            <th width="100px">Value</th>
+        </tr>
+        </thead>
+        <tbody class="table-hover">
+        <tr>
+            <td>Roll</td>
+            <td id = "RollDiv"></td>
+        </tr>
+        <tr>
+            <td>Pitch</td>
+            <td id = "PitchDiv"></td>
+        </tr>
+        <tr>
+            <td>Yaw</td>
+            <td id = "YawDiv"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="FPS_Div"></div>
+    <ul id="propertiesList">
+        <li>
+            <div>
+                <label>Property 1</label>
+                <input id="property1" class="property_confirmed" type="number">
+            </div>
+        </li>
+        <li>
+            <div>
+                <label>Property 2</label>
+                <input id="property2" class="property_loading" type="number">
+            </div>
+        </li>
+        <li>
+            <div>
+                <label>Property 3</label>
+                <input id="property3" class="property_failed" type="number">
+            </div>
+        </li>
+    </ul>
+    <!--/CONTENT-->
+</div>
+
+<script>
