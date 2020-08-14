@@ -5,9 +5,9 @@
 #ifndef LIBEVENTAPP_CUSTOMCALLBACKS_H
 #define LIBEVENTAPP_CUSTOMCALLBACKS_H
 
-#include "ImageGenerator.h"
-#include "RPYTGenerator.h"
-#include "../../LibEventServer.h"
+#include "Libs/ImageGenerator.h"
+#include "Libs/StatsGenerator.h"
+#include "LibEventServer.h"
 
 #include <iostream>
 #include <fstream>
@@ -23,7 +23,7 @@
 #include <vector>
 #include <sstream>
 
-#include "base64.cpp"
+#include "Libs/base64.cpp"
 
 LibEventServer server;
 

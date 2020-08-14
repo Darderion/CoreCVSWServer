@@ -9,33 +9,30 @@ function(cat IN_FILE OUT_FILE)
     file(APPEND ${OUT_FILE} "${CONTENTS}")
 endfunction()
 
-file(GLOB SRC examples/BasicServer/main.cpp)
-file(GLOB SRC2 examples/CoreCVS/main.cpp)
+file(GLOB SRC main.cpp)
 file(GLOB HTML
-        examples/CoreCVS/Pages/html/Header.html
-        examples/CoreCVS/Pages/css/style.css
-        examples/CoreCVS/Pages/html/Body.html
-        examples/CoreCVS/Pages/html/Content.html
-        examples/CoreCVS/Pages/js/main.js
-        examples/CoreCVS/Pages/html/Script.html)
+        Pages/html/Header.html
+        Pages/css/style.css
+        Pages/html/Body.html
+        Pages/html/Content.html
+        Pages/js/main.js
+        Pages/html/Script.html)
 
 # Prepare a temporary file to "cat" to:
-file(WRITE examples/CoreCVS/Pages/index.template.html "")
+file(WRITE Pages/index.template.html "")
 
 # Call the "cat" function for each input file
 foreach(html_template_file ${HTML})
-    cat(${html_template_file} examples/CoreCVS/Pages/index.template.html)
+    cat(${html_template_file} Pages/index.template.html)
 endforeach()
 
 # Copy the temporary file to the final location
-configure_file(examples/CoreCVS/Pages/index.template.html Pages/index.html COPYONLY)
+configure_file(Pages/index.template.html Pages/index.html COPYONLY)
 
 file(COPY
-        examples/CoreCVS/Pages/img
+        Pages/img
         DESTINATION Pages/)
 
-add_executable(libEventApp ${SRC})
-add_executable(generateImageApp ${SRC2})
+add_executable(coreCVSWServerApp ${SRC})
 
-target_link_libraries(libEventApp -levent)
-target_link_libraries(generateImageApp -levent)
+target_link_libraries(coreCVSWServerApp -levent)

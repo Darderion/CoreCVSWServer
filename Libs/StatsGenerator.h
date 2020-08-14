@@ -2,8 +2,8 @@
 // Created by dio on 8/7/20.
 //
 
-#ifndef LIBEVENTSERVER_RPYTGENERATOR_H
-#define LIBEVENTSERVER_RPYTGENERATOR_H
+#ifndef LIBEVENTSERVER_STATSGENERATOR_H
+#define LIBEVENTSERVER_STATSGENERATOR_H
 
 #include <stdlib.h>
 
@@ -23,4 +23,4 @@ void setParam1(int val) { param1 = val; }
 void setParam2(int val) { param2 = val; }
 void setParam3(int val) { param3 = val; }
 
-#endif //LIBEVENTSERVER_RPYTGENERATOR_H
+#endif //LIBEVENTSERVER_STATSGENERATOR_H

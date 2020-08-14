@@ -1,5 +1,5 @@
 
-#include "../../LibEventServer.h"
+#include "LibEventServer.h"
 #include "customCallbacks.h"
 
 int main(int argc, char **argv) {
