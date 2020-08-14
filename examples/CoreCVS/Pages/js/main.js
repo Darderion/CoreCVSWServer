@@ -1,6 +1,47 @@
 
 let statsLoaded = true;
 let fps = 0;
+const properties = {
+    values : [],
+    types : [
+        'property_confirmed',
+        'property_loading',
+        'property_failed'
+    ],
+    PROPERTY_CONFIRMED: 0,
+    PROPERTY_LOADING: 1,
+    PROPERTY_FAILED: 2,
+    maxIndex : 0, // This property is equal to (values.size + 1)
+    set(index, value) {
+        this.values[index] = value;
+        let param = document.getElementById(`property${index+1}`);
+        param.value = value;
+        this.types.forEach(type => param.classList.remove(type));
+        param.classList.add(this.types[this.PROPERTY_CONFIRMED]);
+    },
+    initialize() {
+        let param;
+        while(param = document.getElementById(`property${++this.maxIndex}`)) {
+            param.oninput = function() {
+                properties.types.forEach(type => this.classList.remove(type));
+                this.classList.add(properties.types[properties.PROPERTY_LOADING]);
+            }
+        }
+    }
+}
+
+function recursive_Ajax(url, func) { return send_Ajax(url, func, true); }
+function send_Ajax(url, func, recursive = false) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.onload = function() {
+        if (this.status === 200) {
+            func(this.responseText);
+            if (recursive) send_Ajax(url, func, true);
+        }
+    };
+    xhr.send();
+}
 
 let cameraImage = {
     displaying: true,
@@ -33,27 +74,31 @@ let cameraImage = {
 }
 
 function onLoad() {
-    function recursive_Ajax(url, func) { return send_Ajax(url, func, true); }
-    function send_Ajax(url, func, recursive = false) {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.onload = function() {
-            if (this.status === 200) {
-                func(this.responseText);
-                if (recursive) send_Ajax(url, func, true);
-            }
-        };
-        xhr.send();
-    }
-
+    properties.initialize();
     setInterval(_ => {
         if (statsLoaded) {
             statsLoaded = false;
             send_Ajax('stats_request', data => {
-                const arr = data.split('$');
-                document.getElementById('RollDiv').innerHTML = arr[0];
-                document.getElementById('PitchDiv').innerHTML = arr[1];
-                document.getElementById('YawDiv').innerHTML = arr[2];
+                const arr = data.split('@');
+
+                const modes = arr[0].split('$');
+
+                const parameters_changed = modes.includes('Parameters_Changed');
+
+                const arr_stats = arr[1].split('$');
+                document.getElementById('RollDiv').innerHTML = arr_stats[0];
+                document.getElementById('PitchDiv').innerHTML = arr_stats[1];
+                document.getElementById('YawDiv').innerHTML = arr_stats[2];
+
+                const arr_params = arr[2].split('$');
+                arr_params.forEach((el, ind) => {
+                    if (// Initialize a value
+                        !properties.values[ind] ||
+                        // Either update a value or discard any changes made to it if parameters have been changed on a server
+                        (properties.values[ind] !== el && parameters_changed)) {
+                        properties.set(ind, el);
+                    }
+                })
                 statsLoaded = true;
             })
         }
