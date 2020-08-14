@@ -77,13 +77,11 @@ void on_image_request(struct evhttp_request *req, void *arg)
 
 void on_stats_request(struct evhttp_request *req, void *arg)
 {
-    const char *img_name = generateImage();
     evbuffer *evb = evbuffer_new(); // Creating a response buffer
     if (!evb) return;               // No pointer returned
 
-    evbuffer_add_printf(evb, "%i$%i$%i", getRoll(), getPitch(), getYaw());
-
-    // evhttp_add_header(req->output_headers, "Content-Type", "image/jpeg");
+    evbuffer_add_printf(evb, "%i$%i$%i",
+                        getRoll(), getPitch(), getYaw());
 
     evhttp_send_reply(req, HTTP_OK, "OK", evb);
     evbuffer_free(evb);

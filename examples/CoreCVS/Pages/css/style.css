@@ -2,31 +2,19 @@
 html {
     overflow-y: scroll;
 }
-#menu {
-    display: grid;
-    color: red;
-    width: 100%;
-    height: 100px;
-    background-color: #abcdef;
-    grid-template-columns: auto repeat(3, 200px) 100px;
-}
-#menu button {
-    margin: 5%;
-}
-#menuOptionCamera {
-    grid-column: 2;
-}
-#menuOption2 {
-    grid-column: 3;
-}
-#menuOption3 {
-    grid-column: 4;
-}
+
 #img {
     object-fit: cover;
-    width: 800px;
+    width: 400px;
     height: 100%;
 }
+#imgDiv {
+    /* other styles */
+    -webkit-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+    text-align: center;
+}
+
 #propertiesList {
     margin: 0;
     padding: 0;
@@ -58,11 +46,13 @@ html {
 .property_failed {
     background-color : red;
 }
+
+/* Table */
 .table-fill {
     background: white;
     border-radius:3px;
     border-collapse: collapse;
-    height: 320px;
+    width: 100%;
     padding:5px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     animation: float 5s infinite;
@@ -108,28 +98,93 @@ td {
     text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
     border-right: 1px solid #C1C3D1;
 }
-#imgDiv {
-    /* other styles */
-    -webkit-transition: all 1s ease-in-out;
-    transition: all 1s ease-in-out;
-}
+
+/* Menu */
 #menu {
+    display: grid;
+    color: red;
+    width: 100%;
+    height: 100px;
+    background-color: #abcdef;
+    grid-template-columns: auto repeat(3, 80px) 40px;
     font-family: 'Montserrat', Helvetica, sans-serif;
 }
-#menu button {
-    background: #76B3FA;
-    border-radius: 100px;
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.45em;
-}
+#menuOptionCamera { grid-column: 2; }
+#menuOption2 {      grid-column: 3; }
+#menuOption3 {      grid-column: 4; }
 #menu button:active {
     -webkit-animation: active 1200ms ease 1 alternate;
     animation: active 1200ms ease 1 alternate;
     background: #5F9BE0;
 }
+#menu button {
+    background: #76B3FA;
+    border-radius: 50px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1em;
+    margin: 5%;
+}
+#menu button:focus {
+    outline: none;
+}
 #menu .gray { background: #D2D2D2; }
 #menu .gray:active { background: #b9b9b9; }
+
 #content {
     margin: 0 2%;
+}
+
+@media(min-width: 550px) {
+    #img {
+        width: 500px;
+    }
+}
+
+/* DESKTOP VERSION */
+@media(min-width: 768px) {
+    #tables {
+        display: grid;
+        grid-template-columns: 50% 50%;
+    }
+
+    .table-fill {
+        grid-column: 1;
+    }
+
+    #propertiesList {
+        grid-column: 2;
+    }
+
+    #menu button {
+        border-radius: 100px;
+        font-size: 1.45em;
+    }
+
+    #menu {
+        display: grid;
+        color: red;
+        width: 100%;
+        height: 100px;
+        background-color: #abcdef;
+        grid-template-columns: auto repeat(3, 200px) 100px;
+        font-family: 'Montserrat', Helvetica, sans-serif;
+    }
+
+    #img {
+        width: 700px;
+    }
+}
+
+@media(min-width: 850px) {
+    #img {
+        width: 800px;
+    }
+}
+
+/* Background */
+body {
+    background-color: #7373D3;
+    background-image: linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent);
+    background-size:50px 50px;
 }
