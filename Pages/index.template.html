@@ -14,28 +14,14 @@ html {
     transition: all 1s ease-in-out;
     text-align: center;
 }
-
-#propertiesList {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
-#propertiesList input {
+#properties input {
     border: 2px solid #008000;
     width: 230px;
     /* border: 2px solid #456879; */
     border-radius:10px;
-    height: 22px;
 }
-#propertiesList input:focus {
+#properties input:focus {
     outline: none;
-}
-#propertiesList div {
-    display: inline-block;
-}
-#propertiesList label {
-    display: block;
-    text-align: center;
 }
 .property_confirmed {
     background-color : #99FFCC;
@@ -97,6 +83,10 @@ td {
     font-size:18px;
     text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
     border-right: 1px solid #C1C3D1;
+    height: 32px;
+}
+td input {
+    font-size: 18px;
 }
 
 /* Menu */
@@ -152,7 +142,7 @@ td {
         grid-column: 1;
     }
 
-    #propertiesList {
+    #properties {
         grid-column: 2;
     }
 
@@ -229,26 +219,34 @@ body {
         </tr>
         </tbody>
     </table>
-    <ul id="propertiesList">
-        <li>
-            <div>
-                <label>Property 1</label>
+    <table class="table-fill" id="properties">
+        <thead>
+        <tr>
+            <th>Property</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody class="table-hover">
+        <tr>
+            <td>Property 1</td>
+            <td>
                 <input id="property1" class="property_confirmed" type="number">
-            </div>
-        </li>
-        <li>
-            <div>
-                <label>Property 2</label>
-                <input id="property2" class="property_loading" type="number">
-            </div>
-        </li>
-        <li>
-            <div>
-                <label>Property 3</label>
-                <input id="property3" class="property_failed" type="number">
-            </div>
-        </li>
-    </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Property 1</td>
+            <td>
+                <input id="property2" class="property_confirmed" type="number">
+            </td>
+        </tr>
+        <tr>
+            <td>Property 1</td>
+            <td>
+                <input id="property3" class="property_confirmed" type="number">
+            </td>
+        </tr>
+        </tbody>
+    </table>
     </div>
     <!--/CONTENT-->
 </div>
@@ -348,6 +346,7 @@ let cameraImage = {
     heightChecked: false,
     initHeight : 0,
     slideToggle: function () {
+        // This method does not work after a window has been resized
         if (!this.div) {
             this.div = document.getElementById('imgDiv');
             this.div.style.height = `${this.div.offsetHeight}px`;

@@ -77,6 +77,7 @@ let cameraImage = {
     heightChecked: false,
     initHeight : 0,
     slideToggle: function () {
+        // This method does not work after a window has been resized
         if (!this.div) {
             this.div = document.getElementById('imgDiv');
             this.div.style.height = `${this.div.offsetHeight}px`;
