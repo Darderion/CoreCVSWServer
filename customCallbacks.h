@@ -80,7 +80,7 @@ void on_get_stats_request(struct evhttp_request *req, void *arg)
     evbuffer *evb = evbuffer_new(); // Creating a response buffer
     if (!evb) return;               // No pointer returned
 
-    evbuffer_add_printf(evb, "I@%i$%i$%i@%i$%i$%i",
+    evbuffer_add_printf(evb, "Parameters_Changed@%i$%i$%i@%i$%i$%i",
                         getRoll(), getPitch(), getYaw(),
                         getParam1(), getParam2(), getParam3());
 
