@@ -9,7 +9,8 @@ int main(int argc, char **argv) {
     server.setup();               // Starting server with current configuration
     server.set_callback("/",on_get_index);                  // Adding handlers
     server.set_callback("/image_request", on_image_request);// for different routes
-    server.set_callback("/stats_request", on_stats_request);// for different routes
+    server.set_callback("/stats_request", on_get_stats_request);// for different routes
+    server.set_callback("/change_stat_request", on_change_stats_request);
     server.set_default_callback(on_other_requests);
 
     while(true)

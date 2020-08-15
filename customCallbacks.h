@@ -75,7 +75,7 @@ void on_image_request(struct evhttp_request *req, void *arg)
 #endif
 }
 
-void on_stats_request(struct evhttp_request *req, void *arg)
+void on_get_stats_request(struct evhttp_request *req, void *arg)
 {
     evbuffer *evb = evbuffer_new(); // Creating a response buffer
     if (!evb) return;               // No pointer returned
@@ -85,6 +85,38 @@ void on_stats_request(struct evhttp_request *req, void *arg)
                         getParam1(), getParam2(), getParam3());
 
     evhttp_send_reply(req, HTTP_OK, "OK", evb);
+    evbuffer_free(evb);
+}
+
+void on_change_stats_request(struct evhttp_request *req, void *arg)
+{
+    evbuffer *evb = evbuffer_new(); // Creating a response buffer
+    if (!evb) return;               // No pointer returned
+
+    char *param;
+    char *value;
+
+    strtok(req->uri, "?");
+
+    if ((param = strtok(NULL, "?")) != nullptr) {
+        if ((value = strtok(NULL, "?")) != nullptr) {
+            switch(atoi(param))
+            {
+                case 1: setParam1(atoi(value)); break;
+                case 2: setParam2(atoi(value)); break;
+                case 3: setParam3(atoi(value)); break;
+                default:
+                    evhttp_send_reply(req, HTTP_BADREQUEST, "Wrong parameter", evb);
+                    evbuffer_free(evb);
+                    return;
+            }
+            evhttp_send_reply(req, HTTP_OK, "OK", evb);
+            evbuffer_free(evb);
+            return;
+        }
+    }
+
+    evhttp_send_reply(req, HTTP_BADREQUEST, "No parameters", evb);
     evbuffer_free(evb);
 }
 

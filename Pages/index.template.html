@@ -282,34 +282,63 @@ const properties = {
     PROPERTY_CONFIRMED: 0,
     PROPERTY_LOADING: 1,
     PROPERTY_FAILED: 2,
+
+    URL_CHANGE_PARAM: 'change_stat_request',
+
+    setPropertyClass : function (prop, prop_class) {
+        if (Number.isInteger(prop)) {
+            // prop is an index starting from 1
+            prop = document.getElementById(`property${prop}`);
+        }
+        if (Number.isInteger(prop_class)) {
+            // prop_class is an index starting from 0
+            prop_class = this.types[prop_class];
+        }
+        this.types.forEach(type => prop.classList.remove(type));
+        prop.classList.add(prop_class);
+    },
     maxIndex : 0, // This property is equal to (values.size + 1)
     set(index, value) {
         this.values[index] = value;
         let param = document.getElementById(`property${index+1}`);
         param.value = value;
-        this.types.forEach(type => param.classList.remove(type));
-        param.classList.add(this.types[this.PROPERTY_CONFIRMED]);
+        this.setPropertyClass(param, this.PROPERTY_CONFIRMED);
     },
     initialize() {
         let param;
         while(param = document.getElementById(`property${++this.maxIndex}`)) {
             param.oninput = function() {
-                properties.types.forEach(type => this.classList.remove(type));
-                this.classList.add(properties.types[properties.PROPERTY_LOADING]);
-            }
+                properties.setPropertyClass(this, properties.PROPERTY_LOADING);
+                // match(/\d+/) returns the first number from a string
+                send_Ajax(`${properties.URL_CHANGE_PARAM}?${this.id.match(/\d+/)[0]}?${this.value}`,
+                    _ => {
+                        properties.setPropertyClass(this, properties.PROPERTY_CONFIRMED);
+                    }, {
+                        error: _ => {
+                            properties.setPropertyClass(this, properties.PROPERTY_FAILED);
+                        }
+                    });
+            };
         }
     }
 }
 
-function recursive_Ajax(url, func) { return send_Ajax(url, func, true); }
-function send_Ajax(url, func, recursive = false) {
+function recursive_Ajax(url, func, options = {}) {
+    options.recursive = true;
+    return send_Ajax(url, func, options);
+}
+function send_Ajax(url, func, options = {}) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.onload = function() {
         if (this.status === 200) {
             func(this.responseText);
-            if (recursive) send_Ajax(url, func, true);
+        } else {
+            if (options.error) {
+                options.error(this.responseText);
+            }
         }
+        if (options.recursive) send_Ajax(url, func, options);
     };
     xhr.send();
 }
